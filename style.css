@@ -1,1 +1,23 @@
 /* Style */
+body{
+    display: flex;
+}
+
+.square{
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    height: 450px;
+    border: 8px solid gray;
+}
+
+.row{
+    display: flex;
+    flex: 1;
+}
+
+.cell{
+    flex: 1;
+    border: 1px solid black;
+}
+
