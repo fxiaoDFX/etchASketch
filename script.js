@@ -21,4 +21,26 @@ function makeGrid(size){
     }
 }
 
+let timer = null;
+// Color cell on mousedown 
+function draw(){
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => cell.addEventListener('mousedown', () => {
+        timer = setInterval(() => {
+            cell.classList.add('active');
+            console.log('drawing');
+        }, 50);
+    }));
+}
+
+function drawDone(){
+    clearInterval(timer);
+    console.log('Finished drawing');
+}
+
+square.addEventListener('mouseup', drawDone);
+square.addEventListener('mouseleave', drawDone);
+
+// test grid
 makeGrid(16);
+draw();
