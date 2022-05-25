@@ -21,26 +21,45 @@ function makeGrid(size){
     }
 }
 
-let timer = null;
-// Color cell on mousedown 
-function draw(){
+/*
+* Color in cell when mouse hold down and over cell
+*/
+
+// Detect mouse down and mouse up activity in square 
+let mousedown = false;
+
+document.onmousedown = (e) => {
+    mousedown = true;
+    draw(e);
+}
+document.onmouseup = () => (mousedown = false);
+square.onmouseover = (e) => mousedown && draw(e);
+
+function draw(e){
+    // color
+    if(e.target.className === 'cell' && eraser === false)
+        e.target.classList.add('active');
+    // erase
+    if(e.target.className === 'cell active' && eraser === true)
+        e.target.classList.remove('active');
+}
+
+// erase and clear buttons
+const erase = document.querySelector('.erase');
+const clear = document.querySelector('.clear');
+let eraser = false;
+
+// remove .active class from only cells targeted cells
+erase.addEventListener('click', () => {
+    eraser = !eraser;
+    console.log(eraser);
+});
+
+// remove .active class from all cells
+clear.addEventListener('click', () => {
     const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => cell.addEventListener('mousedown', () => {
-        timer = setInterval(() => {
-            cell.classList.add('active');
-            console.log('drawing');
-        }, 50);
-    }));
-}
-
-function drawDone(){
-    clearInterval(timer);
-    console.log('Finished drawing');
-}
-
-square.addEventListener('mouseup', drawDone);
-square.addEventListener('mouseleave', drawDone);
+    cells.forEach(cell => cell.classList.remove('active'));
+});
 
 // test grid
 makeGrid(16);
-draw();
