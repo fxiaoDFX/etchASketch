@@ -4,8 +4,11 @@ const square = document.createElement('div');
 square.classList.add("square");
 container.appendChild(square);
 
-// Create cells
-// Make a div to hold div cells
+
+/**
+ * Draws a grid
+ * @param {number} size the size of grid to be drawn
+*/
 function makeGrid(size){
     for(let i = 0; i < size; i++){
         // Make rows
@@ -28,13 +31,17 @@ function makeGrid(size){
 // Detect mouse down and mouse up activity in square 
 let mousedown = false;
 
-document.onmousedown = (e) => {
+square.onmousedown = (e) => {
     mousedown = true;
     draw(e);
 }
-document.onmouseup = () => (mousedown = false);
+square.onmouseup = () => (mousedown = false);
 square.onmouseover = (e) => mousedown && draw(e);
 
+/**
+ * Colors in cell when mouse click down, stops drawing on mouse click up
+ * @param {object} e the element object that is to be drawn on
+ */
 function draw(e){
     // color
     if(e.target.className === 'cell' && eraser === false)
@@ -61,5 +68,30 @@ clear.addEventListener('click', () => {
     cells.forEach(cell => cell.classList.remove('active'));
 });
 
-// test grid
+// Range slider
+const slider = document.getElementById("gridSlider");
+const sliderValue = document.querySelector('.sliderValue');
+
+// Display value of slider
+sliderValue.innerHTML = "Size: " + slider.value;
+
+// Update slider value when changed
+//slider.oninput = () =>
+  //  sliderValue.textContent = slider.value;
+
+// Draw the grid
 makeGrid(16);
+
+// Update grid size when using slider
+slider.oninput = () => {
+    deleteGrid();
+    makeGrid(slider.value);
+}
+
+function deleteGrid(){
+    const rows = document.querySelectorAll('.row');
+    rows.forEach(row => row.remove());
+}
+
+//slider.oninput = () => console.log(slider.value);
+//slider.oninput can only do one event per instance, try using a boolean to control events
