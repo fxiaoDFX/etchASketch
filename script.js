@@ -57,9 +57,14 @@ const clear = document.querySelector('.clear');
 let eraser = false;
 
 // remove .active class from only cells targeted cells
+const colors =  ['rgb(0,200,255)', ''];
+let index = 0;
+
 erase.addEventListener('click', () => {
     eraser = !eraser;
-    console.log(eraser);
+    erase.style.backgroundColor = colors[index];
+
+    index = index >= colors.length - 1 ? 0 : index + 1;
 });
 
 // remove .active class from all cells
