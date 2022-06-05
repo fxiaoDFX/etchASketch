@@ -50,13 +50,13 @@ const sliderValue = document.querySelector('.sliderValue');
 
 // When slider value is changed, update slider value and change grid size to new value, reset the drawing.
 slider.oninput = () => {
-    sliderValue.innerHTML = "Size: " + slider.value;
+    sliderValue.innerHTML = slider.value + "x" + slider.value;
     deleteGrid();
     makeGrid(slider.value);
 }
 
 // Display value of slider
-sliderValue.innerHTML = "Size: " + slider.value;
+sliderValue.innerHTML = slider.value + "x" + slider.value;
 
 // Draw the grid
 makeGrid(16);
