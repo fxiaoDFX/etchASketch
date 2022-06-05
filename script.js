@@ -72,26 +72,19 @@ clear.addEventListener('click', () => {
 const slider = document.getElementById("gridSlider");
 const sliderValue = document.querySelector('.sliderValue');
 
-// Display value of slider
-sliderValue.innerHTML = "Size: " + slider.value;
-
-// Update slider value when changed
-//slider.oninput = () =>
-  //  sliderValue.textContent = slider.value;
-
-// Draw the grid
-makeGrid(16);
-
-// Update grid size when using slider
 slider.oninput = () => {
+    sliderValue.innerHTML = "Size: " + slider.value;
     deleteGrid();
     makeGrid(slider.value);
 }
+
+// Display value of slider
+sliderValue.innerHTML = "Size: " + slider.value;
+
+// Draw the grid
+makeGrid(16);
 
 function deleteGrid(){
     const rows = document.querySelectorAll('.row');
     rows.forEach(row => row.remove());
 }
-
-//slider.oninput = () => console.log(slider.value);
-//slider.oninput can only do one event per instance, try using a boolean to control events
