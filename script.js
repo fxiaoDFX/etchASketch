@@ -4,7 +4,65 @@ const square = document.createElement('div');
 square.classList.add("square");
 container.appendChild(square);
 
+/*
+* Color in cell when mouse hold down and over cell
+*/
+// Detect mouse down and mouse up activity in square 
+let mousedown = false;
 
+square.onmousedown = (e) => {
+    mousedown = true;
+    // Draw or erase depending on whether Erase button is active
+    draw(e);
+}
+square.onmouseup = () => (mousedown = false);
+square.onmouseover = (e) => mousedown && draw(e);
+
+/*
+* Buttons
+*/
+// erase and clear buttons
+const erase = document.querySelector('.erase');
+const clear = document.querySelector('.clear');
+let eraser = false;
+const colors =  ['rgb(0,200,255)', ''];
+let index = 0;
+
+// Sets mouse to eraser when Erase button is clicked
+erase.addEventListener('click', () => {
+    eraser = !eraser;
+    erase.style.backgroundColor = colors[index];
+
+    index = index >= colors.length - 1 ? 0 : index + 1;
+});
+
+// Delete the color from all cells
+clear.addEventListener('click', () => {
+    deleteGrid();
+    makeGrid(slider.value);
+});
+
+/*
+* Range Slider
+*/
+const slider = document.getElementById("gridSlider");
+const sliderValue = document.querySelector('.sliderValue');
+
+// When slider value is changed, update slider value and change grid size to new value, reset the drawing.
+slider.oninput = () => {
+    sliderValue.innerHTML = "Size: " + slider.value;
+    deleteGrid();
+    makeGrid(slider.value);
+}
+
+// Display value of slider
+sliderValue.innerHTML = "Size: " + slider.value;
+
+// Draw the grid
+makeGrid(16);
+
+
+// Functions
 /**
  * Draws a grid
  * @param {number} size the size of grid to be drawn
@@ -24,25 +82,11 @@ function makeGrid(size){
     }
 }
 
-/*
-* Color in cell when mouse hold down and over cell
-*/
-
-// Detect mouse down and mouse up activity in square 
-let mousedown = false;
-
-square.onmousedown = (e) => {
-    mousedown = true;
-    draw(e);
-}
-square.onmouseup = () => (mousedown = false);
-square.onmouseover = (e) => mousedown && draw(e);
-
 /**
  * Colors in cell when mouse click down, stops drawing on mouse click up
  * @param {object} e the element object that is to be drawn on
  */
-function draw(e){
+ function draw(e){
     // color
     if(e.target.className === 'cell' && eraser === false)
         e.target.classList.add('active');
@@ -51,44 +95,9 @@ function draw(e){
         e.target.classList.remove('active');
 }
 
-// erase and clear buttons
-const erase = document.querySelector('.erase');
-const clear = document.querySelector('.clear');
-let eraser = false;
-
-// remove .active class from only cells targeted cells
-const colors =  ['rgb(0,200,255)', ''];
-let index = 0;
-
-erase.addEventListener('click', () => {
-    eraser = !eraser;
-    erase.style.backgroundColor = colors[index];
-
-    index = index >= colors.length - 1 ? 0 : index + 1;
-});
-
-// remove .active class from all cells
-clear.addEventListener('click', () => {
-    const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => cell.classList.remove('active'));
-});
-
-// Range slider
-const slider = document.getElementById("gridSlider");
-const sliderValue = document.querySelector('.sliderValue');
-
-slider.oninput = () => {
-    sliderValue.innerHTML = "Size: " + slider.value;
-    deleteGrid();
-    makeGrid(slider.value);
-}
-
-// Display value of slider
-sliderValue.innerHTML = "Size: " + slider.value;
-
-// Draw the grid
-makeGrid(16);
-
+/**
+ * Deletes the whole grid
+ */
 function deleteGrid(){
     const rows = document.querySelectorAll('.row');
     rows.forEach(row => row.remove());
